@@ -1,5 +1,6 @@
 '''Utilities relating to running commands and HTTP requests'''
 import logging
+import ast
 
 import dcos.http
 import shakedown
@@ -32,3 +33,12 @@ def run_cli(cmd, print_output=True):
         log.error(err)
         raise dcos.errors.DCOSException(err)
     return stdout
+
+
+def convert_output_to_list(output):
+    """When a list is the expected output of a command,
+    this converts the string output to said expected list.
+
+    In spite of being a one-liner it standardizes the conversion.
+    """
+    return [element.strip() for element in ast.literal_eval(output)]
